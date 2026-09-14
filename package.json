@@ -1,0 +1,27 @@
+{
+    "author": "GeckoCode",
+    "dependencies": {},
+    "keywords": [
+        "pebble-app"
+    ],
+    "name": "niedziela-normalna-czy-popierdolona",
+    "pebble": {
+        "displayName": "Niedziela normalna czy popierdolona",
+        "enableMultiJS": true,
+        "messageKeys": [],
+        "projectType": "moddable",
+        "resources": {
+            "media": []
+        },
+        "sdkVersion": "3",
+        "targetPlatforms": [
+            "emery",
+            "gabbro"
+        ],
+        "uuid": "26427000-37a8-4698-9a45-1f412cd4f19c",
+        "watchapp": {
+            "watchface": false
+        }
+    },
+    "version": "1.0.0"
+}
