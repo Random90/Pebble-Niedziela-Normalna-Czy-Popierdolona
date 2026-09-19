@@ -1,9 +1,11 @@
 import Poco from "commodetto/Poco";
 import DateUtils from "dateUtils";
+import TimelineHelper from "timelineHelper";
 
 
 const render = new Poco(screen);
 const dateUtils = new DateUtils();
+const timeline = new TimelineHelper();
 
 // Fonts
 const mainFont = new render.Font("Gothic-Bold", 28);
@@ -13,11 +15,12 @@ const smallTitleFont = new render.Font("Gothic-Regular", 14);
 const black = render.makeColor(0, 0, 0);
 const white = render.makeColor(255, 255, 255);
 
+const nextSunday = dateUtils.getNextSundayDate();
 
+timeline.createPin(nextSunday);
 
 function draw() {
     const now = new Date();
-    const nextSunday = dateUtils.getNextSundayDate();
     const prefix = now.getMonth() === nextSunday.getMonth() && now.getDate() === nextSunday.getDate() ? 'Dzisiejsza' : "Następna";
     const mainText = dateUtils.isNextSundayNormal() ? "Normalna" : "PoPiErdOLOnA";
     const title = `${prefix} niedziela (${nextSunday.getDate().toString().padStart(2, "0")}.${(nextSunday.getMonth() + 1).toString().padStart(2,"0")}) jest:`;
@@ -34,6 +37,8 @@ function draw() {
 };
 
 draw();
+
+
 
 // console.log('last sunday of normal month - ', dateUtils.isNextSundayNormal());
 // console.log('25.01 exact (true)- ', dateUtils.isNextSundayNormal(new Date('2026-01-25')));

@@ -8,7 +8,11 @@
     "pebble": {
         "displayName": "Niedziela normalna czy popierdolona",
         "enableMultiJS": true,
-        "messageKeys": [],
+        "messageKeys": [
+            "SundayDate",
+            "Normalna",
+            "PhoneReady"
+        ],
         "projectType": "moddable",
         "resources": {
             "media": []

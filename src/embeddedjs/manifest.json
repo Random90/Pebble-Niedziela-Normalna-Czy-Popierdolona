@@ -5,7 +5,8 @@
 	"modules": {
     "*": [
         "./main.js",
-        "./dateUtils.js"
+        "./dateUtils.js",
+        "./timelineHelper.js"
     ]
 	}
   
