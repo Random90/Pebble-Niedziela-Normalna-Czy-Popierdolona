@@ -1,7 +1,7 @@
 import Poco from "commodetto/Poco";
 import DateUtils from "dateUtils";
 import TimelineHelper from "timelineHelper";
-
+import WakeUp from "pebble/wakeup";
 
 const render = new Poco(screen);
 const dateUtils = new DateUtils();
@@ -15,14 +15,19 @@ const smallTitleFont = new render.Font("Gothic-Regular", 14);
 const black = render.makeColor(0, 0, 0);
 const white = render.makeColor(255, 255, 255);
 
-const nextSunday = dateUtils.getNextSundayDate();
+const LS_WAKE_ID = "wakeid"
+const WAKE_COOKIE = 2137;
 
-timeline.createPin(nextSunday);
+const nextSunday = dateUtils.getNextSundayDate();
+const normalna = dateUtils.isNextSundayNormal(); 
+const isBackgroundWake = watch.wake && watch.wake.cookie === WAKE_COOKIE;
+
+timeline.createPin(nextSunday, normalna);
 
 function draw() {
     const now = new Date();
     const prefix = now.getMonth() === nextSunday.getMonth() && now.getDate() === nextSunday.getDate() ? 'Dzisiejsza' : "Następna";
-    const mainText = dateUtils.isNextSundayNormal() ? "Normalna" : "PoPiErdOLOnA";
+    const mainText = normalna ? "Normalna" : "PoPiErdOLOnA";
     const title = `${prefix} niedziela (${nextSunday.getDate().toString().padStart(2, "0")}.${(nextSunday.getMonth() + 1).toString().padStart(2,"0")}) jest:`;
 
     render.begin();
@@ -37,6 +42,42 @@ function draw() {
 };
 
 draw();
+
+const wakeId = localStorage.getItem(LS_WAKE_ID);
+if (wakeId) {
+    const wakeup = WakeUp.query(wakeId);
+    if (!wakeup) {
+        console.log("clearing old wakeup id");
+        localStorage.removeItem(LS_WAKE_ID);
+        scheduleWakeUp();
+    } else if (!wakeup.scheduled || wakeup.time <= Date.now()) {
+        console.log("Wakeup expired.");
+        WakeUp.cancel(wakeId);
+        localStorage.removeItem(LS_WAKE_ID);
+        scheduleWakeUp();
+    } else {
+      console.log("Wakeup already scheduled: ", wakeup.time);
+    }
+} else {
+  console.log("No wakeup scheduled.");
+  scheduleWakeUp();
+}
+
+if (isBackgroundWake) {
+  console.log("Automated weekly wakeup triggered.");
+  setTimeout(() => { 
+      watch.exit(); 
+  }, 3000);
+}
+
+
+function scheduleWakeUp() {
+  const wakeupDate = new Date(nextSunday);
+  wakeupDate.setDate(wakeupDate.getDate() + 2);
+  const id = WakeUp.schedule(wakeupDate.getTime(), WAKE_COOKIE, false);
+  console.log(`Scheduled WakeUp id ${id}`);
+  localStorage.setItem(LS_WAKE_ID, id.toString());
+}
 
 
 

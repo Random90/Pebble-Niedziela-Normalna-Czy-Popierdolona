@@ -1,7 +1,7 @@
 import Message from "pebble/message";
 
 class TimelineHelper {  
-  createPin(sundayDate) {
+  createPin(sundayDate, normalna) {
       const message = new Message({
         keys: ["SundayDate", "Normalna", "PhoneReady"],
         onReadable() {
@@ -11,21 +11,18 @@ class TimelineHelper {
             });
         },
         onWritable() {
-            console.log("Ready to send messages");
-            if (this.once) {
-              console.log('once!')
+            if (this.once) {  
 			        return;
             }
 
         		this.once = true;
         		 message.write(new Map([
               ["SundayDate", sundayDate.toISOString()],
-              ["Normalna", false]
+              ["Normalna", normalna]
             ]));
-        		console.log("wrote!");
+          console.log("Pin queried to phone: ", sundayDate.toISOString());
         },
         onSuspend() {
-            console.log("Messages suspended");
         }
       });
   }
