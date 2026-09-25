@@ -41,7 +41,7 @@ Pebble.addEventListener('appmessage', (event) => {
       layout: {
         type: 'genericPin',
         title: dict.Normalna == 1 ? 'Normalna Niedziela' : 'PoPiErdOLOnA Niedziela',
-        tinyIcon: 'system://images/NOTIFICATION_FLAG'
+        tinyIcon: dict.Normalna == 1 ? 'system://images/MUSIC_EVENT' : 'system://images/GENERIC_WARNING'
       }
     });
   }

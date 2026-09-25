@@ -15,7 +15,15 @@
         ],
         "projectType": "moddable",
         "resources": {
-            "media": []
+            "media": [
+                {
+                    "file": "images/niedzielaIcon.png",
+                    "menuIcon": true,
+                    "name": "MENU",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                }
+            ]
         },
         "sdkVersion": "3",
         "targetPlatforms": [

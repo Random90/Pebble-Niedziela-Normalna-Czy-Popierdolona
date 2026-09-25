@@ -17,12 +17,23 @@ const white = render.makeColor(255, 255, 255);
 
 const LS_WAKE_ID = "wakeid"
 const WAKE_COOKIE = 2137;
+const PINS_TO_ADD_COUNT = 6
 
 const nextSunday = dateUtils.getNextSundayDate();
 const normalna = dateUtils.isNextSundayNormal(); 
 const isBackgroundWake = watch.wake && watch.wake.cookie === WAKE_COOKIE;
 
 timeline.createPin(nextSunday, normalna);
+
+let nextWeek = new Date(nextSunday);
+for(let i = 0; i <= PINS_TO_ADD_COUNT; i++) {
+  nextWeek.setDate(nextWeek.getDate() + 3);
+  const anotherSunday = dateUtils.getNextSundayDate(nextWeek);
+  timeline.createPin(anotherSunday, normalna);
+  nextWeek = new Date(anotherSunday);
+}
+
+
 
 function draw() {
     const now = new Date();
